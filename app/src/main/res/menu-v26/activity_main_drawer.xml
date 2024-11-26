@@ -7,18 +7,15 @@
         <item
             android:id="@+id/nav_savings"
             android:icon="@drawable/ic_savings"
-            android:iconTint="@color/yellow"
             android:title="@string/home"
             />
         <item
             android:id="@+id/nav_income"
             android:icon="@drawable/ic_income"
-            android:title="@string/income"
-            android:iconTint="@color/green"/>
+            android:title="@string/income" />
         <item
             android:id="@+id/nav_outcome"
             android:icon="@drawable/ic_outcome"
-            android:title="@string/outcome"
-            android:iconTint="@color/red"/>
+            android:title="@string/outcome" />
     </group>
 </menu>

@@ -7,19 +7,20 @@
 
     <fragment
         android:id="@+id/nav_savings"
-        android:name="com.example.cointrol.ui.home.SavingsFragment"
+        android:name="com.example.cointrol.ui.savings.SavingsFragment"
         android:label="@string/home"
         tools:layout="@layout/fragment_savings" />
 
     <fragment
         android:id="@+id/nav_income"
-        android:name="com.example.cointrol.ui.gallery.IncomeFragment"
+        android:name="com.example.cointrol.ui.income.IncomeFragment"
         android:label="@string/income"
-        tools:layout="@layout/fragment_income" />
+        tools:layout="@layout/fragment_income"
+        app:itemIconTint="@color/green"/>
 
     <fragment
         android:id="@+id/nav_outcome"
-        android:name="com.example.cointrol.ui.slideshow.OutcomeFragment"
+        android:name="com.example.cointrol.ui.outcome.OutcomeFragment"
         android:label="@string/outcome"
         tools:layout="@layout/fragment_outcome" />
 </navigation>

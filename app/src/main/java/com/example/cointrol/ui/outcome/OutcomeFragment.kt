@@ -1,4 +1,4 @@
-package com.example.cointrol.ui.slideshow
+package com.example.cointrol.ui.outcome
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -38,5 +38,9 @@ class OutcomeFragment : Fragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+    }
+
+    override fun onPause() {
+        super.onPause()
     }
 }

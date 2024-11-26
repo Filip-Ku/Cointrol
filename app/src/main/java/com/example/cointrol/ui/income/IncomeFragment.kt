@@ -1,4 +1,4 @@
-package com.example.cointrol.ui.gallery
+package com.example.cointrol.ui.income
 
 import android.os.Bundle
 import android.view.LayoutInflater

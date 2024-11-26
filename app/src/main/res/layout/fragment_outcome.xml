@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.slideshow.OutcomeFragment">
+    tools:context=".ui.outcome.OutcomeFragment">
 
     <TextView
         android:id="@+id/text_slideshow"

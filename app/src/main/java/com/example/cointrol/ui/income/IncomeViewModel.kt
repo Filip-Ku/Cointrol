@@ -1,4 +1,4 @@
-package com.example.cointrol.ui.gallery
+package com.example.cointrol.ui.income
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
