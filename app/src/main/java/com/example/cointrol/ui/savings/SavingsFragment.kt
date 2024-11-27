@@ -1,7 +1,7 @@
 package com.example.cointrol.ui.savings
 
-import NbpApiService
-import NbpExchangeRate
+import com.example.cointrol.NbpApi.NbpApiService
+import com.example.cointrol.NbpApi.NbpExchangeRate
 import android.annotation.SuppressLint
 import android.content.Context
 import android.os.Bundle
@@ -15,6 +15,8 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.cointrol.MyAdapter
+import com.example.cointrol.database.Transaction
+import com.example.cointrol.database.TransactionDatabase
 import com.example.cointrol.databinding.FragmentSavingsBinding
 import retrofit2.Call
 import retrofit2.Callback
@@ -25,7 +27,6 @@ import com.example.cointrol.ui.database.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import java.util.Calendar
 import kotlin.random.*
 
 class SavingsFragment : Fragment() {

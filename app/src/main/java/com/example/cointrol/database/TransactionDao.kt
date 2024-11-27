@@ -1,4 +1,4 @@
-package com.example.cointrol.ui.database
+package com.example.cointrol.database
 
 import androidx.lifecycle.LiveData
 import androidx.room.Dao

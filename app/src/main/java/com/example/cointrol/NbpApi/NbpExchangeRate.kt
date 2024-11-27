@@ -1,3 +1,5 @@
+package com.example.cointrol.NbpApi
+
 data class NbpExchangeRate(
     val table: String,
     val currency: String,

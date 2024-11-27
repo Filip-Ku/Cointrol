@@ -1,4 +1,4 @@
-package com.example.cointrol.ui.database
+package com.example.cointrol.database
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity
