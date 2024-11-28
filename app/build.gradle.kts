@@ -60,6 +60,8 @@ dependencies {
     kapt("androidx.room:room-compiler:2.6.1")
     implementation ("androidx.room:room-ktx:2.6.1")
 
+    implementation("androidx.swiperefreshlayout:swiperefreshlayout:1.2.0-alpha01")
+
 
     // Testing dependencies
     testImplementation("junit:junit:4.13.2")

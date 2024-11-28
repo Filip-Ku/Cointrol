@@ -30,4 +30,13 @@ interface TransactionDao {
     @Query("SELECT * FROM transactions WHERE type=\"outcome\" ORDER BY date  LIMIT 3 ")
     suspend fun getLastThreeOutcomes(): List<Transaction>
 
+    @Query("SELECT * FROM transactions WHERE type = :type")
+    suspend fun getAllIncomes(type: String = "income"): List<Transaction>
+
+    @Query("SELECT MAX(amount) FROM transactions WHERE type = :type")
+    suspend fun getHighestIncome(type: String = "income"): Double?
+
+    @Query("SELECT SUM(amount) FROM transactions WHERE type = :type")
+    suspend fun getCombinedIncome(type: String = "income"): Double?
+
 }

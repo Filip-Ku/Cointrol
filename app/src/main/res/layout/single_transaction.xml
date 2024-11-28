@@ -1,30 +1,29 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!-- res/layout/item_transaction.xml -->
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="40dp"
-    android:background="@color/black">
+    android:layout_height="32dp"
+    android:background="@drawable/rounded_background"
+    android:padding="5dp">
 
     <TextView
         android:id="@+id/typeTextView"
-        android:layout_width="150dp"
+        android:layout_width="100dp"
         android:layout_height="wrap_content"
         android:text="Income"
-        android:textSize="20dp" />
+        android:textSize="16dp" />
 
     <TextView
         android:id="@+id/amountTextView"
         android:layout_width="80dp"
         android:layout_height="wrap_content"
         android:text="0.0"
-        android:textSize="20dp"
-        android:layout_marginLeft="20dp"/>
+        android:textSize="16dp"
+        android:layout_marginLeft="10dp" />
 
     <TextView
         android:id="@+id/dateTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Date"
-        android:textSize="20dp"
-        android:layout_marginLeft="30dp"/>
+        android:textSize="16dp"
+        android:layout_marginLeft="10dp" />
 </LinearLayout>

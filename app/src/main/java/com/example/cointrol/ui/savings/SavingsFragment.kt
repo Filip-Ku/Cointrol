@@ -1,10 +1,9 @@
 package com.example.cointrol.ui.savings
 
-import com.example.cointrol.NbpApi.NbpApiService
-import com.example.cointrol.NbpApi.NbpExchangeRate
 import android.annotation.SuppressLint
 import android.content.Context
 import android.os.Bundle
+import android.os.Handler
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -14,20 +13,24 @@ import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.example.cointrol.MyAdapter
+import com.example.cointrol.NbpApi.NbpApiService
+import com.example.cointrol.NbpApi.NbpExchangeRate
 import com.example.cointrol.database.Transaction
 import com.example.cointrol.database.TransactionDatabase
 import com.example.cointrol.databinding.FragmentSavingsBinding
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
-import com.example.cointrol.ui.database.*
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import kotlin.random.*
+import com.example.cointrol.database.*
+import com.example.cointrol.ui.SpaceItemDecoration
 
 class SavingsFragment : Fragment() {
 
@@ -42,6 +45,8 @@ class SavingsFragment : Fragment() {
     private lateinit var lastOutcomes: ArrayList<Transaction>
     private lateinit var incomeAdapter: MyAdapter
     private lateinit var outcomeAdapter: MyAdapter
+    private lateinit var swipeRefreshLayout: SwipeRefreshLayout
+
 
 
     @SuppressLint("SetTextI18n")
@@ -57,7 +62,22 @@ class SavingsFragment : Fragment() {
         plnEdit = binding.plnEdit
         dollarEdit = binding.dollarEdit
         currencies = binding.sumOfCurrencies
-        fetchExchangeRate("usd")
+
+        swipeRefreshLayout = binding.swiperefresh
+        swipeRefreshLayout.setOnRefreshListener {
+            refreshData()
+        }
+
+
+        val handler = Handler()
+        val refresh = object : Runnable {
+            override fun run() {
+                fetchExchangeRate("usd")
+                handler.postDelayed(this, 60000)
+            }
+        }
+        handler.post(refresh)
+
 
         val sharedPreferences = requireContext().getSharedPreferences("SavingsPrefs", Context.MODE_PRIVATE)
         val savedPlnValue = sharedPreferences.getString("pln_value", "0 PLN")
@@ -67,6 +87,7 @@ class SavingsFragment : Fragment() {
         outcomeAdapter = MyAdapter(lastOutcomes, requireContext())
         binding.outcomeRecyclerView.layoutManager = LinearLayoutManager(requireContext())
         binding.outcomeRecyclerView.adapter = outcomeAdapter
+        binding.outcomeRecyclerView.addItemDecoration(SpaceItemDecoration(16))
 
 
 
@@ -74,6 +95,7 @@ class SavingsFragment : Fragment() {
         incomeAdapter = MyAdapter(lastIncomes, requireContext())
         binding.incomeRecyclerView.layoutManager = LinearLayoutManager(requireContext())
         binding.incomeRecyclerView.adapter = incomeAdapter
+        binding.incomeRecyclerView.addItemDecoration(SpaceItemDecoration(16))
 
         val db = TransactionDatabase.getDatabase(requireContext())
 
@@ -108,6 +130,16 @@ class SavingsFragment : Fragment() {
         editor.putString("dollar_value", dollar.text.toString())
         editor.apply()
         super.onPause()
+    }
+
+    private fun refreshData() {
+        fetchExchangeRate("usd")
+        swipeRefreshLayout.isRefreshing = false
+    }
+
+    override fun onStart() {
+        super.onStart()
+        fetchExchangeRate("usd")
     }
 
     fun changeBallance(view: View) {
@@ -145,6 +177,8 @@ class SavingsFragment : Fragment() {
             lastOutcomes.addAll(lastOutcomesTransactions)
 
             binding.outcomeRecyclerView.adapter?.notifyDataSetChanged()
+
+           // dao.clearAllTransactions()
         }
     }
 
