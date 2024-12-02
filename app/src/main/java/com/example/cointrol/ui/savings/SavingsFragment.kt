@@ -193,7 +193,8 @@ class SavingsFragment : Fragment() {
                     val exchangeRate = response.body()
                     exchangeRate?.let {
                         val dollarCount = Regex("\\d+(\\.\\d+)?").find(dollar.text.toString())?.value?.toFloat() ?: 0f
-                        val plnCount = Regex("\\d+(\\.\\d+)?").find(pln.text.toString())?.value?.toFloat() ?: 0f
+                        val plnCountString = pln.text.toString().replace(",", ".") // Zamień przecinek na kropkę
+                        val plnCount = Regex("\\d+(\\.\\d+)?").find(plnCountString)?.value?.toFloat() ?: 0f
 
                         val dollarToPln = it.rates[0].mid.toFloat() * 0.98f * dollarCount
 
