@@ -3,6 +3,7 @@ package com.example.cointrol.database
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import java.sql.Date
 
 @Entity(tableName = "transactions")
 data class Transaction(

@@ -164,21 +164,20 @@ class SavingsFragment : Fragment() {
         lifecycleScope.launch {
             val dao = database.transactionDao()
             val lastTransactions = withContext(Dispatchers.IO) {
-                dao.getLastThreeIncomes()
+                dao.getLastThreeTransactions("income")
             }
             lastIncomes.clear()
             lastIncomes.addAll(lastTransactions)
             incomeAdapter.notifyDataSetChanged()
 
             val lastOutcomesTransactions = withContext(Dispatchers.IO) {
-                dao.getLastThreeOutcomes()
+                dao.getLastThreeTransactions("outcome")
             }
             lastOutcomes.clear()
             lastOutcomes.addAll(lastOutcomesTransactions)
 
             binding.outcomeRecyclerView.adapter?.notifyDataSetChanged()
-
-           // dao.clearAllTransactions()
+            dao.clearAllTransactions()
         }
     }
 

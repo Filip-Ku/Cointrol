@@ -18,25 +18,63 @@ interface TransactionDao {
     @Delete
     suspend fun delete(transaction: Transaction)
 
-    @Query("SELECT * FROM transactions")
-    suspend fun getAllTransactions(): List<Transaction>
-
     @Query("DELETE FROM transactions")
     suspend fun clearAllTransactions()
 
-    @Query("SELECT * FROM transactions WHERE type=\"income\" ORDER BY date  LIMIT 3 ")
-    suspend fun getLastThreeIncomes(): List<Transaction>
+    @Query("SELECT * FROM transactions WHERE type=:type ORDER BY date  LIMIT 3 ")
+    suspend fun getLastThreeTransactions(type: String): List<Transaction>
 
-    @Query("SELECT * FROM transactions WHERE type=\"outcome\" ORDER BY date  LIMIT 3 ")
-    suspend fun getLastThreeOutcomes(): List<Transaction>
+    @Query("""
+    SELECT * 
+    FROM transactions 
+    WHERE type = :type 
+    ORDER BY strftime('%Y-%m-%d', 
+        substr(date, 7, 4) || '-' || substr(date, 4, 2) || '-' || substr(date, 1, 2)) DESC
+    """)
+    suspend fun getAllTransactions(type: String): List<Transaction>
 
-    @Query("SELECT * FROM transactions WHERE type = :type")
-    suspend fun getAllIncomes(type: String = "income"): List<Transaction>
+    @Query("""
+    SELECT * 
+    FROM transactions 
+    WHERE type = :type 
+    AND strftime('%Y-%m-%d', 
+            substr(date, 7, 4) || '-' || substr(date, 4, 2) || '-' || substr(date, 1, 2)) 
+            BETWEEN strftime('%Y-%m-%d', :startDate) 
+            AND strftime('%Y-%m-%d', :endDate)
+            ORDER BY date DESC
+    """)
+    suspend fun getTransactionsForDateRange(
+        type: String,
+        startDate: String,
+        endDate: String
+    ): List<Transaction>
 
-    @Query("SELECT MAX(amount) FROM transactions WHERE type = :type")
-    suspend fun getHighestIncome(type: String = "income"): Double?
+
+    @Query("SELECT MAX(amount) FROM transactions WHERE type = :type ")
+    suspend fun getHighestTransaction(type: String): Double?
+
+    @Query("SELECT MAX(amount) FROM transactions WHERE type = :type AND strftime('%Y-%m-%d', \n" +
+            "            substr(date, 7, 4) || '-' || substr(date, 4, 2) || '-' || substr(date, 1, 2)) \n" +
+            "            BETWEEN strftime('%Y-%m-%d', :startDate) \n" +
+            "            AND strftime('%Y-%m-%d', :endDate)")
+    suspend fun getHighestTransactionForDateRange(type: String,startDate:String,endDate: String): Double?
 
     @Query("SELECT SUM(amount) FROM transactions WHERE type = :type")
-    suspend fun getCombinedIncome(type: String = "income"): Double?
+    suspend fun getCombinedTransaction(type: String): Double?
+
+    @Query("SELECT SUM(amount) FROM transactions WHERE type = :type  AND strftime('%Y-%m-%d', \n" +
+            "            substr(date, 7, 4) || '-' || substr(date, 4, 2) || '-' || substr(date, 1, 2)) \n" +
+            "            BETWEEN strftime('%Y-%m-%d', :startDate) \n" +
+            "            AND strftime('%Y-%m-%d', :endDate)")
+    suspend fun getCombinedTransactionForDateRange(type: String,startDate:String,endDate: String): Double?
+
+    @Query("SELECT * FROM transactions WHERE `desc` LIKE :phrase AND type = :type ORDER BY date DESC")
+    suspend fun searchByPhrase(type: String,phrase: String): List<Transaction>
+
+    @Query("SELECT * FROM transactions WHERE `desc` LIKE :phrase AND type = :type  AND strftime('%Y-%m-%d', \n" +
+            "            substr(date, 7, 4) || '-' || substr(date, 4, 2) || '-' || substr(date, 1, 2)) \n" +
+            "            BETWEEN strftime('%Y-%m-%d', :startDate) \n" +
+            "            AND strftime('%Y-%m-%d', :endDate)ORDER BY date DESC")
+    suspend fun searchByPhraseForDateRange(type: String,phrase: String,startDate:String,endDate:String): List<Transaction>
 
 }
